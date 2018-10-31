@@ -1,0 +1,12 @@
+<resources>
+    <string name="app_name">Parc Lille 1</string>
+
+    <string-array name="probleme_type">
+        <item id="arbre_tailler">Arbre à tailler</item>
+        <item id="arbre_abattre">Arbre à abbatre</item>
+        <item id="detritus">Détritus</item>
+        <item id="haie_tailler">Haie à tailler</item>
+        <item id="mauvaise_herbe">Mauvaise herbe</item>
+        <item id="autre">Autre</item>
+    </string-array>
+</resources>
