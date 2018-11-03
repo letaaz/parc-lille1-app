@@ -6,12 +6,16 @@ import android.arch.lifecycle.LiveData
 import com.example.letaaz.parclille1.data.Probleme
 import com.example.letaaz.parclille1.data.ProblemeRepository
 
-class MainViewModel(application: Application) : AndroidViewModel(application) {
+/**
+ * This class represents the probleme ViewModel
+ * Its much like a wrapper for the ProblemeRepository class
+ */
+class ProblemeViewModel(application: Application) : AndroidViewModel(application) {
     private val mProblemeRepository : ProblemeRepository = ProblemeRepository(application)
-    var mAllProblemes: LiveData<List<Probleme>>
+    var mProblemes: LiveData<List<Probleme>>
 
     init {
-        mAllProblemes = mProblemeRepository.getAllProblemes()
+        mProblemes = mProblemeRepository.getAllProblemes()
     }
 
     fun addProbleme(prob : Probleme) {
@@ -25,4 +29,5 @@ class MainViewModel(application: Application) : AndroidViewModel(application) {
     fun removeProbleme(prob: Probleme) {
         mProblemeRepository.removeProbleme(prob)
     }
+
 }

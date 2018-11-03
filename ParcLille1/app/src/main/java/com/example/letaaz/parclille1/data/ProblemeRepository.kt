@@ -4,6 +4,9 @@ import android.app.Application
 import android.arch.lifecycle.LiveData
 import android.os.AsyncTask
 
+/*
+ *  This class acts as an API between the viewModel and the model DAO
+ */
 class ProblemeRepository(application: Application) {
 
     private val mProblemeDAO : ProblemeDAO
@@ -30,8 +33,13 @@ class ProblemeRepository(application: Application) {
     fun removeProbleme(prob: Probleme) {
         RemoveAsyncTask(mProblemeDAO).execute(prob)
     }
+
 }
 
+/**
+ * This class run the insertion operation in background allowing the UI thread to be free from
+ * long running queries
+ */
 class InsertAsyncTask(problemeDAO: ProblemeDAO): AsyncTask<Probleme, Void, Void>() {
     private val mAsyncTaskDAO : ProblemeDAO = problemeDAO
     override fun doInBackground(vararg params: Probleme?): Void? {
@@ -40,11 +48,15 @@ class InsertAsyncTask(problemeDAO: ProblemeDAO): AsyncTask<Probleme, Void, Void>
     }
 }
 
+/**
+ * This class run the deletion operation in background allowing the UI thread to be free from
+ * long running queries
+ */
 class RemoveAsyncTask(problemeDAO: ProblemeDAO): AsyncTask<Probleme?, Void, Void>() {
     private val mAsyncTaskDAO : ProblemeDAO = problemeDAO
     override fun doInBackground(vararg params: Probleme?): Void? {
         if (params.size == 0)
-            mAsyncTaskDAO.removeAllProbleme()
+            mAsyncTaskDAO.removeAllProblemes()
         else
             mAsyncTaskDAO.removeProbleme(params[0]!!)
         return null

@@ -3,6 +3,10 @@ package com.example.letaaz.parclille1.data
 import android.arch.lifecycle.LiveData
 import android.arch.persistence.room.*
 
+/*
+ *   Definition of the Probleme's Data Access Object
+ *   Listing all possible operations with the database
+ */
 @Dao
 interface ProblemeDAO {
 
@@ -19,5 +23,5 @@ interface ProblemeDAO {
     fun removeProbleme(prob : Probleme)
 
     @Query("delete from problemes")
-    fun removeAllProbleme()
+    fun removeAllProblemes()
 }

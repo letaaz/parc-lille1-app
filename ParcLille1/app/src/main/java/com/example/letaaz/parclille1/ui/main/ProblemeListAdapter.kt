@@ -9,6 +9,11 @@ import com.example.letaaz.parclille1.R
 import com.example.letaaz.parclille1.data.Probleme
 import kotlinx.android.synthetic.main.probleme_recyclerview_item.view.*
 
+/**
+ * This class represents the Problem's recyclerView adapter
+ * Responsible for inflating the item's view
+ * It also provides a listener function for an item
+ */
 class ProblemeListAdapter(context: Context): RecyclerView.Adapter<ProblemeListAdapter.ProblemeViewHolder>() {
 
     private val mInflater: LayoutInflater = LayoutInflater.from(context)
@@ -24,7 +29,7 @@ class ProblemeListAdapter(context: Context): RecyclerView.Adapter<ProblemeListAd
         if(mProblemes != null) {
             val current = mProblemes!![position]
             holder.problemeItemType.text = current.type
-            holder.problemeItemPosition.text = current.position
+            holder.problemeItemPosition.text = "" + current.position_lat + "," + current.position_long
         } else {
             holder.problemeItemType.text = "ERROR ON BIND"
             holder.problemeItemPosition.text = "ERROR ON BIND"
