@@ -10,7 +10,7 @@ import android.arch.persistence.room.migration.Migration
 import android.content.Context
 import android.os.AsyncTask
 
-@Database(entities = arrayOf(Probleme::class), version = 1, exportSchema = true)
+@Database(entities = arrayOf(Probleme::class), version = 1, exportSchema = false)
 @TypeConverters(LatLngTypeConverter::class)
 abstract class AppDatabase : RoomDatabase(){
 
@@ -23,7 +23,6 @@ abstract class AppDatabase : RoomDatabase(){
     companion object {
         @Volatile
         private var instance: AppDatabase? = null
-        //val MIGRATION_1_2 = Migration1to2()
         val DB_NAME = "ParcLille1DB"
 
         /*
@@ -35,7 +34,6 @@ abstract class AppDatabase : RoomDatabase(){
                     if (instance == null) {
                         instance = Room.databaseBuilder(context.applicationContext,
                                 AppDatabase::class.java, DB_NAME)
-                                // .addMigrations(MIGRATION_1_2)
                                 .addCallback(object : RoomDatabase.Callback() {
                                     override fun onCreate(db: SupportSQLiteDatabase) {
                                         PopulateDbAsync(instance!!).execute()

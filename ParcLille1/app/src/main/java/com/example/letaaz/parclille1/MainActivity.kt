@@ -5,7 +5,6 @@ import android.arch.lifecycle.Observer
 import android.arch.lifecycle.ViewModelProviders
 import android.content.Intent
 import android.content.pm.PackageManager
-import android.opengl.Visibility
 import android.support.v7.app.AppCompatActivity
 import android.os.Bundle
 import android.support.v4.app.ActivityCompat
@@ -15,10 +14,9 @@ import android.util.Log
 import android.view.View
 import android.widget.Button
 import android.widget.Toast
-import com.example.letaaz.parclille1.data.LatLngTypeConverter
 import com.example.letaaz.parclille1.data.Probleme
-import com.example.letaaz.parclille1.ui.main.ProblemeViewModel
-import com.example.letaaz.parclille1.ui.main.ProblemeListAdapter
+import com.example.letaaz.parclille1.ui.ui.ProblemeViewModel
+import com.example.letaaz.parclille1.ui.ui.ProblemeListAdapter
 import com.google.android.gms.maps.GoogleMap
 import com.google.android.gms.maps.OnMapReadyCallback
 import com.google.android.gms.maps.SupportMapFragment
@@ -53,7 +51,7 @@ class MainActivity : AppCompatActivity(), OnMapReadyCallback {
         val recyclerView = findViewById<RecyclerView>(R.id.probleme_recyclerview)
         val adapter = ProblemeListAdapter(this)
         adapter.onItemClick = {
-            val intent = Intent(this, ThirdActivity::class.java)
+            val intent = Intent(this, DetailProblemeActivity::class.java)
             intent.putExtra("PROB_TYPE", it.type)
             intent.putExtra("PROB_POSITION", "" + it.position_lat + "," + it.position_long)
             startActivityForResult(intent, DETAIL_PROBLEME_ACTIVITY_REQUEST_CODE)
@@ -72,7 +70,7 @@ class MainActivity : AppCompatActivity(), OnMapReadyCallback {
         })
 
         mAjoutButton.setOnClickListener {
-            val intent = Intent(this, SecondActivity::class.java)
+            val intent = Intent(this, AddProblemeActivity::class.java)
             startActivityForResult(intent, ADD_PROBLEME_ACTIVITY_REQUEST_CODE)
         }
 
@@ -141,13 +139,11 @@ class MainActivity : AppCompatActivity(), OnMapReadyCallback {
         super.onActivityResult(requestCode, resultCode, data)
         if (requestCode == ADD_PROBLEME_ACTIVITY_REQUEST_CODE && resultCode == Activity.RESULT_OK) {
             // New probleme to be added
-            val pos = data!!.getStringExtra(SecondActivity.EXTRA_REPLY_2)
-            val prob = Probleme(data.getStringExtra(SecondActivity.EXTRA_REPLY_1), pos[0].toDouble(), pos[1].toDouble())
-            mProblemeViewModel.addProbleme(prob)
+            Toast.makeText(this, "Probleme ajouté", Toast.LENGTH_SHORT).show()
         } else if (requestCode == DETAIL_PROBLEME_ACTIVITY_REQUEST_CODE && resultCode == Activity.RESULT_OK) {
             // Probleme to be deleted
-            val pos = data!!.getStringExtra(SecondActivity.EXTRA_REPLY_2)
-            val prob = Probleme(data.getStringExtra(SecondActivity.EXTRA_REPLY_1), pos[0].toDouble(), pos[1].toDouble())
+            val pos = data!!.getStringExtra(AddProblemeActivity.EXTRA_REPLY_2)
+            val prob = Probleme(data.getStringExtra(AddProblemeActivity.EXTRA_REPLY_1), pos[0].toDouble(), pos[1].toDouble())
             mProblemeViewModel.removeProbleme(prob)
         } else {
            Toast.makeText(applicationContext, "Activity finished with error", Toast.LENGTH_LONG).show()

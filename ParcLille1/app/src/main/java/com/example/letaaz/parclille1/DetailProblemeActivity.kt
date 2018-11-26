@@ -10,7 +10,7 @@ import android.support.v7.app.AppCompatActivity
 import android.widget.Button
 import android.widget.TextView
 
-class ThirdActivity : AppCompatActivity() {
+class DetailProblemeActivity : AppCompatActivity() {
 
     companion object {
         const val EXTRA_REPLY_1: String = "com.example.letaaz.parclille1.REPLY_1"

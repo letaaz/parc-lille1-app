@@ -1,4 +1,4 @@
-package com.example.letaaz.parclille1.ui.main
+package com.example.letaaz.parclille1.ui.ui
 
 import android.content.Context
 import android.support.v7.widget.RecyclerView
@@ -29,7 +29,10 @@ class ProblemeListAdapter(context: Context): RecyclerView.Adapter<ProblemeListAd
         if(mProblemes != null) {
             val current = mProblemes!![position]
             holder.problemeItemType.text = current.type
-            holder.problemeItemPosition.text = "" + current.position_lat + "," + current.position_long
+            if (!current.adresse.isEmpty())
+                holder.problemeItemPosition.text = current.adresse
+            else
+                holder.problemeItemPosition.text = "" + current.position_lat + "," + current.position_long
         } else {
             holder.problemeItemType.text = "ERROR ON BIND"
             holder.problemeItemPosition.text = "ERROR ON BIND"

@@ -1,4 +1,4 @@
-package com.example.letaaz.parclille1.ui.main
+package com.example.letaaz.parclille1.ui.ui
 
 import android.app.Application
 import android.arch.lifecycle.AndroidViewModel
