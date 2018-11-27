@@ -13,6 +13,9 @@ interface ProblemeDAO {
     @Query("select * from problemes")
     fun getAllProblemes(): LiveData<List<Probleme>>
 
+    @Query("select * from problemes where id = :prob")
+    fun getProbleme(prob: Int): LiveData<Probleme>
+
     @Insert(onConflict = OnConflictStrategy.REPLACE)
     fun addProbleme(prob : Probleme)
 
@@ -21,6 +24,9 @@ interface ProblemeDAO {
 
     @Delete
     fun removeProbleme(prob : Probleme)
+
+    @Query("delete from problemes where id = :prob")
+    fun removeProbleme(prob : Int)
 
     @Query("delete from problemes")
     fun removeAllProblemes()

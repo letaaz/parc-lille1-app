@@ -22,6 +22,11 @@ import com.google.android.gms.maps.OnMapReadyCallback
 import com.google.android.gms.maps.SupportMapFragment
 import com.google.android.gms.maps.model.LatLng
 import com.google.android.gms.maps.model.MarkerOptions
+import java.text.SimpleDateFormat
+import java.time.LocalDate
+import java.time.LocalDateTime
+import java.time.format.DateTimeFormatter
+import java.util.*
 
 class MainActivity : AppCompatActivity(), OnMapReadyCallback {
 
@@ -29,6 +34,7 @@ class MainActivity : AppCompatActivity(), OnMapReadyCallback {
         private const val ADD_PROBLEME_ACTIVITY_REQUEST_CODE = 1
         private const val DETAIL_PROBLEME_ACTIVITY_REQUEST_CODE = 2
         const val LOCATION_PERMISSION_REQUEST_CODE = 3
+        val DATE_FORMAT = SimpleDateFormat("dd/MM/yyy 'à' HH:mm", Locale.getDefault())
         private val GEOCENTER : LatLng = LatLng(50.6233961, 3.0522625999999997)
     }
 
@@ -54,6 +60,10 @@ class MainActivity : AppCompatActivity(), OnMapReadyCallback {
             val intent = Intent(this, DetailProblemeActivity::class.java)
             intent.putExtra("PROB_TYPE", it.type)
             intent.putExtra("PROB_POSITION", "" + it.position_lat + "," + it.position_long)
+            intent.putExtra("PROB_DESC", it.description)
+            intent.putExtra("PROB_ADDRESSE", it.adresse)
+            intent.putExtra("PROB_DATE", DATE_FORMAT.format(it.date))
+            intent.putExtra("PROB_ID", it.id)
             startActivityForResult(intent, DETAIL_PROBLEME_ACTIVITY_REQUEST_CODE)
         }
         recyclerView.adapter = adapter
@@ -63,7 +73,8 @@ class MainActivity : AppCompatActivity(), OnMapReadyCallback {
         val mViderButton = findViewById<Button>(R.id.vider_problemes_btn)
         val mMapButton = findViewById<Button>(R.id.show_map_btn)
 
-        mProblemeViewModel = ViewModelProviders.of(this).get(ProblemeViewModel::class.java)
+        val factory = InjectorUtils.provideProblemeViewModelFactory(this)
+        mProblemeViewModel = ViewModelProviders.of(this, factory).get(ProblemeViewModel::class.java)
         mProblemeViewModel.mProblemes.observe(this, Observer {
             adapter.setProblemes(it!!)
             updateProblemesMarker(it, mMap)
@@ -138,16 +149,13 @@ class MainActivity : AppCompatActivity(), OnMapReadyCallback {
     override fun onActivityResult(requestCode: Int, resultCode: Int, data: Intent?) {
         super.onActivityResult(requestCode, resultCode, data)
         if (requestCode == ADD_PROBLEME_ACTIVITY_REQUEST_CODE && resultCode == Activity.RESULT_OK) {
-            // New probleme to be added
+            // New probleme added
             Toast.makeText(this, "Probleme ajouté", Toast.LENGTH_SHORT).show()
         } else if (requestCode == DETAIL_PROBLEME_ACTIVITY_REQUEST_CODE && resultCode == Activity.RESULT_OK) {
-            // Probleme to be deleted
-            val pos = data!!.getStringExtra(AddProblemeActivity.EXTRA_REPLY_2)
-            val prob = Probleme(data.getStringExtra(AddProblemeActivity.EXTRA_REPLY_1), pos[0].toDouble(), pos[1].toDouble())
-            mProblemeViewModel.removeProbleme(prob)
-        } else {
-           Toast.makeText(applicationContext, "Activity finished with error", Toast.LENGTH_LONG).show()
-       }
+            // Probleme to delete
+            mProblemeViewModel.removeProbleme(data!!.getLongExtra(DetailProblemeActivity.EXTRA_REPLY_PROBLEME_ID, 0).toInt())
+            Toast.makeText(this, "Probleme supprimé", Toast.LENGTH_SHORT).show()
+        }
     }
 
 }

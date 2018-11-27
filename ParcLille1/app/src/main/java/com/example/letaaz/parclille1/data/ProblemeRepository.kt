@@ -7,20 +7,19 @@ import android.os.AsyncTask
 /*
  *  This class acts as an API between the viewModel and the model DAO
  */
-class ProblemeRepository(application: Application) {
+class ProblemeRepository(problemeDAO: ProblemeDAO) {
 
     private val mProblemeDAO : ProblemeDAO
-    private val mAllProblemes : LiveData<List<Probleme>>
 
     init {
-        val db = AppDatabase.getDatabase(application)
-        mProblemeDAO = db.problemeDAO()
-        mAllProblemes = mProblemeDAO.getAllProblemes()
+        mProblemeDAO = problemeDAO
     }
 
-    fun getAllProblemes() : LiveData<List<Probleme>> {
-        return mAllProblemes
-    }
+    fun getAllProblemes() =
+            mProblemeDAO.getAllProblemes()
+
+    fun getProbleme(problemeId: Int) =
+            mProblemeDAO.getProbleme(problemeId) //Instead of using RetrieveAsyncTask(mProblemeDAO).execute(prob)
 
     fun addProbleme(prob : Probleme) {
         InsertAsyncTask(mProblemeDAO).execute(prob)
@@ -32,6 +31,20 @@ class ProblemeRepository(application: Application) {
 
     fun removeProbleme(prob: Probleme) {
         RemoveAsyncTask(mProblemeDAO).execute(prob)
+    }
+
+    fun removeProbleme(problemeId: Int) {
+        RemoveWithIdAsyncTask(mProblemeDAO).execute(problemeId)
+    }
+
+    companion object {
+
+        @Volatile private var instance: ProblemeRepository? = null
+
+        fun getInstance(problemeDAO: ProblemeDAO) =
+            instance ?: synchronized(this) {
+                instance ?: ProblemeRepository(problemeDAO).also { instance = it }
+            }
     }
 
 }
@@ -61,4 +74,20 @@ class RemoveAsyncTask(problemeDAO: ProblemeDAO): AsyncTask<Probleme?, Void, Void
             mAsyncTaskDAO.removeProbleme(params[0]!!)
         return null
     }
+}
+
+class RemoveWithIdAsyncTask(problemeDAO: ProblemeDAO): AsyncTask<Int, Void, Void>() {
+    private val mAsyncTaskDAO : ProblemeDAO = problemeDAO
+    override fun doInBackground(vararg params: Int?): Void? {
+        mAsyncTaskDAO.removeProbleme(params[0]!!)
+        return null
+    }
+}
+
+class RetrieveAsyncTask(problemeDAO: ProblemeDAO): AsyncTask<Int, Void, LiveData<Probleme>>() {
+    private val mAsyncTaskDAO : ProblemeDAO = problemeDAO
+    override fun doInBackground(vararg params: Int?): LiveData<Probleme>? {
+        return mAsyncTaskDAO.getProbleme(params[0]!!)
+    }
+
 }

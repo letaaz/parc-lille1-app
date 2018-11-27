@@ -10,16 +10,12 @@ import com.google.android.gms.maps.model.LatLng
 class LatLngTypeConverter {
     @TypeConverter
     fun fromLatLng(value : LatLng) : String {
-        return if (value == null) value else ("" + value.latitude + "," + value.longitude)
+        return "" + value.latitude + "," + value.longitude
     }
 
     @TypeConverter
     fun toLatLng(value : String) : LatLng {
-        if (value == null)
-            return value
-        else {
-            val stringArray = value.split(",")
-            return LatLng(stringArray[0].toDouble(), stringArray[1].toDouble())
-        }
+        val stringArray = value.split(",")
+        return LatLng(stringArray[0].toDouble(), stringArray[1].toDouble())
     }
 }

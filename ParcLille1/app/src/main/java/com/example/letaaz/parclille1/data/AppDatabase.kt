@@ -11,7 +11,7 @@ import android.content.Context
 import android.os.AsyncTask
 
 @Database(entities = arrayOf(Probleme::class), version = 1, exportSchema = false)
-@TypeConverters(LatLngTypeConverter::class)
+@TypeConverters(DateTypeConverter::class)
 abstract class AppDatabase : RoomDatabase(){
 
     /*
