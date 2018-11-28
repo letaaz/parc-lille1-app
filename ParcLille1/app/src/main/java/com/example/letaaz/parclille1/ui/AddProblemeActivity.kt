@@ -1,4 +1,4 @@
-package com.example.letaaz.parclille1
+package com.example.letaaz.parclille1.ui
 
 import android.app.Activity
 import android.arch.lifecycle.ViewModelProviders
@@ -12,6 +12,9 @@ import android.widget.Spinner
 import android.widget.TextView
 import android.widget.Toast
 import android.widget.Toast.LENGTH_SHORT
+import com.example.letaaz.parclille1.InjectorUtils
+import com.example.letaaz.parclille1.R
+import com.example.letaaz.parclille1.SimpleLocationService
 import com.example.letaaz.parclille1.data.Probleme
 import com.example.letaaz.parclille1.ui.ui.ProblemeViewModel
 import com.google.android.gms.location.FusedLocationProviderClient
@@ -21,8 +24,6 @@ import java.util.*
 class AddProblemeActivity : AppCompatActivity() {
 
     companion object {
-        const val EXTRA_REPLY_1: String = "com.example.letaaz.parclille1.REPLY_1"
-        const val EXTRA_REPLY_2: String = "com.example.letaaz.parclille1.REPLY_2"
         const val LOCATION_PERMISSION: Int = 1
     }
 

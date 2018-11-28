@@ -1,12 +1,13 @@
 package com.example.letaaz.parclille1.ui.ui
 
-import android.app.Application
-import android.arch.lifecycle.AndroidViewModel
 import android.arch.lifecycle.LiveData
 import android.arch.lifecycle.ViewModel
+import android.location.Location
+import com.example.letaaz.parclille1.ui.MainActivity
+import com.example.letaaz.parclille1.SimpleLocationService
 import com.example.letaaz.parclille1.data.Probleme
-import com.example.letaaz.parclille1.data.ProblemeDAO
 import com.example.letaaz.parclille1.data.ProblemeRepository
+import java.util.*
 
 /**
  * This class represents the probleme ViewModel
@@ -38,6 +39,20 @@ class ProblemeViewModel(probemeRepository: ProblemeRepository) : ViewModel() {
 
     fun removeProbleme(problemeId: Int) {
         mProblemeRepository.removeProbleme(problemeId)
+    }
+
+    fun generateProblemes(number : Int, ssl : SimpleLocationService) {
+        for (i in 1..number) {
+            var fakeType = Probleme.randomType()
+            var fakePosition = Probleme.randomCoordinates(MainActivity.GEOCENTER, 10000)
+            var fakeAddress = Location("")
+            fakeAddress.latitude = fakePosition.latitude
+            fakeAddress.longitude = fakePosition.longitude
+            var prob = Probleme(fakeType, fakePosition.latitude, fakePosition.longitude,
+                            ssl.retrieveAddressFromLocation(fakeAddress), Calendar.getInstance().time,
+                    "Description auto-générée concernant se problème ...")
+            addProbleme(prob)
+        }
     }
 
 }
