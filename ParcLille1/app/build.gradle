@@ -47,4 +47,5 @@ dependencies {
     // Google services
     implementation 'com.google.android.gms:play-services-location:16.0.0'
     implementation 'com.google.android.gms:play-services-maps:16.0.0'
+    implementation 'com.android.support:design:27.1.1'
 }
