@@ -1,4 +1,4 @@
-package com.example.letaaz.parclille1
+package com.example.letaaz.parclille1.ui
 
 import android.app.Activity
 import android.arch.lifecycle.Observer
@@ -11,22 +11,25 @@ import android.support.v4.app.ActivityCompat
 import android.support.v7.widget.LinearLayoutManager
 import android.support.v7.widget.RecyclerView
 import android.util.Log
+import android.view.Menu
+import android.view.MenuInflater
+import android.view.MenuItem
 import android.view.View
 import android.widget.Button
 import android.widget.Toast
+import com.example.letaaz.parclille1.InjectorUtils
+import com.example.letaaz.parclille1.R
+import com.example.letaaz.parclille1.SimpleLocationService
 import com.example.letaaz.parclille1.data.Probleme
 import com.example.letaaz.parclille1.ui.ui.ProblemeViewModel
 import com.example.letaaz.parclille1.ui.ui.ProblemeListAdapter
+import com.google.android.gms.maps.CameraUpdateFactory
 import com.google.android.gms.maps.GoogleMap
 import com.google.android.gms.maps.OnMapReadyCallback
 import com.google.android.gms.maps.SupportMapFragment
 import com.google.android.gms.maps.model.LatLng
 import com.google.android.gms.maps.model.MarkerOptions
 import java.text.SimpleDateFormat
-import java.time.LocalDate
-import java.time.LocalDateTime
-import java.time.format.DateTimeFormatter
-import java.util.*
 
 class MainActivity : AppCompatActivity(), OnMapReadyCallback {
 
@@ -34,14 +37,16 @@ class MainActivity : AppCompatActivity(), OnMapReadyCallback {
         private const val ADD_PROBLEME_ACTIVITY_REQUEST_CODE = 1
         private const val DETAIL_PROBLEME_ACTIVITY_REQUEST_CODE = 2
         const val LOCATION_PERMISSION_REQUEST_CODE = 3
-        val DATE_FORMAT = SimpleDateFormat("dd/MM/yyy 'à' HH:mm", Locale.getDefault())
-        private val GEOCENTER : LatLng = LatLng(50.6233961, 3.0522625999999997)
+        val DATE_FORMAT = SimpleDateFormat("dd/MM/yyy à HH:mm")
+        val GEOCENTER : LatLng = LatLng(50.616266574185104, 3.1003794048932605)
+        private val ZOOM_LEVEL : Float = 6.5f
     }
 
     private lateinit var mMap: GoogleMap
     private lateinit var mapView : View
     private lateinit var homeView : View
     private lateinit var mProblemeViewModel: ProblemeViewModel
+    private lateinit var mSimpleLocationService: SimpleLocationService
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -70,7 +75,6 @@ class MainActivity : AppCompatActivity(), OnMapReadyCallback {
         recyclerView.layoutManager = LinearLayoutManager(this)
 
         val mAjoutButton = findViewById<Button>(R.id.ajout_probleme_btn)
-        val mViderButton = findViewById<Button>(R.id.vider_problemes_btn)
         val mMapButton = findViewById<Button>(R.id.show_map_btn)
 
         val factory = InjectorUtils.provideProblemeViewModelFactory(this)
@@ -79,19 +83,19 @@ class MainActivity : AppCompatActivity(), OnMapReadyCallback {
             adapter.setProblemes(it!!)
             updateProblemesMarker(it, mMap)
         })
+        mSimpleLocationService = SimpleLocationService(this)
 
         mAjoutButton.setOnClickListener {
             val intent = Intent(this, AddProblemeActivity::class.java)
             startActivityForResult(intent, ADD_PROBLEME_ACTIVITY_REQUEST_CODE)
         }
 
+        /**   val mViderButton = findViewById<Button>(R.id.vider_problemes_btn)
         mViderButton.setOnClickListener {
             mProblemeViewModel.removeAllProblemes()
-        }
+        } */
 
         mMapButton.setOnClickListener {
-            /* val intent = Intent(this, MapsActivity::class.java)
-            startActivity(intent) */
             if (homeView.visibility == View.VISIBLE) {
                 homeView.visibility = View.GONE
                 mapView.visibility = View.VISIBLE
@@ -102,12 +106,34 @@ class MainActivity : AppCompatActivity(), OnMapReadyCallback {
         }
     }
 
+    override fun onCreateOptionsMenu(menu: Menu?): Boolean {
+        val inflater : MenuInflater = menuInflater
+        inflater.inflate(R.menu.menu_action_bar, menu)
+        return true
+    }
+
+    override fun onOptionsItemSelected(item: MenuItem?): Boolean {
+        return when(item!!.itemId) {
+            R.id.populate_db_btn -> {
+                mProblemeViewModel.generateProblemes(Probleme.random(10, 20), mSimpleLocationService)
+                true
+            }
+            R.id.clear_db_btn -> {
+                mProblemeViewModel.removeAllProblemes()
+                true
+            }
+            else ->
+                super.onOptionsItemSelected(item)
+        }
+    }
+
     private fun updateProblemesMarker(problemes: List<Probleme>, googleMap : GoogleMap) {
         googleMap.clear()
         problemes.forEach {
             Log.d("MAPSACTIVITY", it.toString())
             googleMap.addMarker(MarkerOptions().position(LatLng(it.position_lat, it.position_long)).title(it.type))
         }
+        googleMap.moveCamera(CameraUpdateFactory.newLatLngZoom(GEOCENTER, ZOOM_LEVEL))
     }
 
     /**
@@ -134,7 +160,6 @@ class MainActivity : AppCompatActivity(), OnMapReadyCallback {
      */
     override fun onMapReady(googleMap: GoogleMap) {
         mMap = googleMap
-        // mMap.moveCamera(CameraUpdateFactory.newLatLng(GEOCENTER))
         setUpMap()
     }
 

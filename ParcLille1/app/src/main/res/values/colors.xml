@@ -3,4 +3,15 @@
     <color name="colorPrimary">#008577</color>
     <color name="colorPrimaryDark">#00574B</color>
     <color name="colorAccent">#d81b60</color>
+
+    <color name="text_background">#F2F1EF</color>
+    <color name="item_background">#E4F1FE</color>
+    <color name="item_text_color">#2E3131</color>
+
+    <color name="probleme_type_arbre_a_tailler">#D35400</color>
+    <color name="probleme_type_arbre_a_abattre">#E47833</color>
+    <color name="probleme_type_detritus">#24252A</color>
+    <color name="probleme_type_haie_a_tailler">#00B16A</color>
+    <color name="probleme_type_mauvaise_herbe">#1E824C</color>
+    <color name="probleme_type_autre">#91B496</color>
 </resources>
