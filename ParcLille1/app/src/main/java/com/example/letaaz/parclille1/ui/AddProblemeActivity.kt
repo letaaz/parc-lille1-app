@@ -16,7 +16,7 @@ import com.example.letaaz.parclille1.InjectorUtils
 import com.example.letaaz.parclille1.R
 import com.example.letaaz.parclille1.SimpleLocationService
 import com.example.letaaz.parclille1.data.Probleme
-import com.example.letaaz.parclille1.ui.ui.ProblemeViewModel
+import com.example.letaaz.parclille1.ui.main.ProblemeViewModel
 import com.google.android.gms.location.FusedLocationProviderClient
 import com.google.android.gms.location.LocationServices
 import java.util.*

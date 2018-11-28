@@ -46,13 +46,14 @@
         </LinearLayout>
 
         <TextView
-            android:id="@+id/detail_probleme_position"
+            android:id="@+id/label_detail_probleme_position"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_marginStart="25dp"
-            android:layout_marginTop="90dp"
-            android:text="TextView"
+            android:layout_marginTop="60dp"
+            android:text="Position géographique (GPS) :"
             android:textSize="16sp"
+            android:textStyle="bold"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toBottomOf="@+id/container_detail_probleme_type" />
 
@@ -62,19 +63,19 @@
             android:layout_height="wrap_content"
             android:layout_marginEnd="16dp"
             android:layout_marginBottom="16dp"
-            android:src="@drawable/poubelle"
+            android:src="@drawable/white_trash_icon"
             app:layout_constraintBottom_toBottomOf="parent"
             app:layout_constraintEnd_toEndOf="parent" />
 
         <TextView
-            android:id="@+id/detail_probleme_adresse"
+            android:id="@+id/label_detail_probleme_adresse"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_marginStart="25dp"
-            android:layout_marginTop="24dp"
-            android:text="TextView"
-            android:lines="2"
+            android:layout_marginTop="12dp"
+            android:text="Addresse :"
             android:textSize="16sp"
+            android:textStyle="bold"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toBottomOf="@+id/detail_probleme_position" />
 
@@ -83,13 +84,14 @@
             android:layout_width="0dp"
             android:layout_height="wrap_content"
             android:layout_marginStart="8dp"
-            android:layout_marginTop="16dp"
+            android:layout_marginTop="8dp"
             android:layout_marginEnd="8dp"
             android:background="@color/text_background"
             android:lines="4"
             android:maxLines="8"
+            android:padding="8dp"
             android:text="TextView"
-            android:textSize="16sp"
+            android:textSize="18sp"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toBottomOf="@+id/detail_probleme_adresse" />
@@ -97,15 +99,40 @@
         <TextView
             android:id="@+id/detail_probleme_date_creation"
             android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_marginTop="32dp"
+            android:layout_height="20dp"
+            android:layout_marginTop="24dp"
             android:layout_marginEnd="16dp"
             android:text="TextView"
             android:textSize="16sp"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintTop_toBottomOf="@+id/detail_probleme_description" />
 
-        <Button
+        <TextView
+            android:id="@+id/detail_probleme_adresse"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="8dp"
+            android:layout_marginTop="8dp"
+            android:layout_marginEnd="8dp"
+            android:lines="3"
+            android:text="TextView"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="@+id/label_detail_probleme_adresse"
+            app:layout_constraintTop_toBottomOf="@+id/label_detail_probleme_adresse" />
+
+        <TextView
+            android:id="@+id/detail_probleme_position"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="8dp"
+            android:layout_marginTop="8dp"
+            android:layout_marginEnd="8dp"
+            android:text="TextView"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="@+id/label_detail_probleme_position"
+            app:layout_constraintTop_toBottomOf="@+id/label_detail_probleme_position" />
+
+        <!-- <Button
             android:id="@+id/detail_probleme_show_map_btn"
             android:layout_width="wrap_content"
             android:layout_height="46dp"
@@ -113,7 +140,7 @@
             android:layout_marginEnd="16dp"
             android:text="Show Map"
             app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintTop_toBottomOf="@+id/container_detail_probleme_type" />
+            app:layout_constraintTop_toBottomOf="@+id/container_detail_probleme_type" /> -->
 
     </android.support.constraint.ConstraintLayout>
 

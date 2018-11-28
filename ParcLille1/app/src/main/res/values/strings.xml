@@ -10,4 +10,5 @@
         <item id="autre">Autre</item>
     </string-array>
     <string name="title_activity_maps">Map</string>
+    <string name="activity_main_title">Liste des problèmes</string>
 </resources>

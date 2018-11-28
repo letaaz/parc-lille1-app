@@ -5,9 +5,10 @@ import android.arch.lifecycle.Observer
 import android.arch.lifecycle.ViewModelProviders
 import android.content.Intent
 import android.content.pm.PackageManager
-import android.support.v7.app.AppCompatActivity
 import android.os.Bundle
+import android.support.design.widget.FloatingActionButton
 import android.support.v4.app.ActivityCompat
+import android.support.v7.app.AppCompatActivity
 import android.support.v7.widget.LinearLayoutManager
 import android.support.v7.widget.RecyclerView
 import android.util.Log
@@ -15,13 +16,11 @@ import android.view.Menu
 import android.view.MenuInflater
 import android.view.MenuItem
 import android.view.View
-import android.widget.Button
-import android.widget.Toast
 import com.example.letaaz.parclille1.InjectorUtils
 import com.example.letaaz.parclille1.R
 import com.example.letaaz.parclille1.SimpleLocationService
 import com.example.letaaz.parclille1.data.Probleme
-import com.example.letaaz.parclille1.ui.ui.ProblemeViewModel
+import com.example.letaaz.parclille1.ui.main.ProblemeViewModel
 import com.example.letaaz.parclille1.ui.ui.ProblemeListAdapter
 import com.google.android.gms.maps.CameraUpdateFactory
 import com.google.android.gms.maps.GoogleMap
@@ -39,7 +38,7 @@ class MainActivity : AppCompatActivity(), OnMapReadyCallback {
         const val LOCATION_PERMISSION_REQUEST_CODE = 3
         val DATE_FORMAT = SimpleDateFormat("dd/MM/yyy à HH:mm")
         val GEOCENTER : LatLng = LatLng(50.616266574185104, 3.1003794048932605)
-        private val ZOOM_LEVEL : Float = 6.5f
+        private val ZOOM_LEVEL : Float = 6.8f
     }
 
     private lateinit var mMap: GoogleMap
@@ -63,19 +62,13 @@ class MainActivity : AppCompatActivity(), OnMapReadyCallback {
         val adapter = ProblemeListAdapter(this)
         adapter.onItemClick = {
             val intent = Intent(this, DetailProblemeActivity::class.java)
-            intent.putExtra("PROB_TYPE", it.type)
-            intent.putExtra("PROB_POSITION", "" + it.position_lat + "," + it.position_long)
-            intent.putExtra("PROB_DESC", it.description)
-            intent.putExtra("PROB_ADDRESSE", it.adresse)
-            intent.putExtra("PROB_DATE", DATE_FORMAT.format(it.date))
             intent.putExtra("PROB_ID", it.id)
             startActivityForResult(intent, DETAIL_PROBLEME_ACTIVITY_REQUEST_CODE)
         }
         recyclerView.adapter = adapter
         recyclerView.layoutManager = LinearLayoutManager(this)
 
-        val mAjoutButton = findViewById<Button>(R.id.ajout_probleme_btn)
-        val mMapButton = findViewById<Button>(R.id.show_map_btn)
+        val mAjoutButton = findViewById<FloatingActionButton>(R.id.ajout_probleme_fab)
 
         val factory = InjectorUtils.provideProblemeViewModelFactory(this)
         mProblemeViewModel = ViewModelProviders.of(this, factory).get(ProblemeViewModel::class.java)
@@ -95,6 +88,7 @@ class MainActivity : AppCompatActivity(), OnMapReadyCallback {
             mProblemeViewModel.removeAllProblemes()
         } */
 
+        /** val mMapButton = findViewById<Button>(R.id.show_map_btn)
         mMapButton.setOnClickListener {
             if (homeView.visibility == View.VISIBLE) {
                 homeView.visibility = View.GONE
@@ -103,12 +97,12 @@ class MainActivity : AppCompatActivity(), OnMapReadyCallback {
                 mapView.visibility = View.GONE
                 homeView.visibility = View.VISIBLE
             }
-        }
+        } */
     }
 
     override fun onCreateOptionsMenu(menu: Menu?): Boolean {
         val inflater : MenuInflater = menuInflater
-        inflater.inflate(R.menu.menu_action_bar, menu)
+        inflater.inflate(R.menu.main_activity_menu, menu)
         return true
     }
 
@@ -122,7 +116,16 @@ class MainActivity : AppCompatActivity(), OnMapReadyCallback {
                 mProblemeViewModel.removeAllProblemes()
                 true
             }
-            else ->
+            R.id.main_activity_show_map_btn -> {
+                if (homeView.visibility == View.VISIBLE) {
+                    homeView.visibility = View.GONE
+                    mapView.visibility = View.VISIBLE
+                } else {
+                    mapView.visibility = View.GONE
+                    homeView.visibility = View.VISIBLE
+                }
+                true
+            }else ->
                 super.onOptionsItemSelected(item)
         }
     }
@@ -175,11 +178,11 @@ class MainActivity : AppCompatActivity(), OnMapReadyCallback {
         super.onActivityResult(requestCode, resultCode, data)
         if (requestCode == ADD_PROBLEME_ACTIVITY_REQUEST_CODE && resultCode == Activity.RESULT_OK) {
             // New probleme added
-            Toast.makeText(this, "Probleme ajouté", Toast.LENGTH_SHORT).show()
+            //Toast.makeText(this, "Probleme ajouté", Toast.LENGTH_SHORT).show()
         } else if (requestCode == DETAIL_PROBLEME_ACTIVITY_REQUEST_CODE && resultCode == Activity.RESULT_OK) {
-            // Probleme to delete
+            // Received probleme to delete
             mProblemeViewModel.removeProbleme(data!!.getLongExtra(DetailProblemeActivity.EXTRA_REPLY_PROBLEME_ID, 0).toInt())
-            Toast.makeText(this, "Probleme supprimé", Toast.LENGTH_SHORT).show()
+            //Toast.makeText(this, "Probleme supprimé", Toast.LENGTH_SHORT).show()
         }
     }
 

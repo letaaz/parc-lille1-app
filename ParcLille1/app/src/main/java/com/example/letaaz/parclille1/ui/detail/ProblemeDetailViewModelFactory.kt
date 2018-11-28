@@ -4,6 +4,9 @@ import android.arch.lifecycle.ViewModel
 import android.arch.lifecycle.ViewModelProvider
 import com.example.letaaz.parclille1.data.ProblemeRepository
 
+/**
+ * Factory class responsible for creating a ProblemeDetailViewModel object
+ */
 class ProblemeDetailViewModelFactory(
         private val problemeRepository : ProblemeRepository,
         private val problemeId : Int

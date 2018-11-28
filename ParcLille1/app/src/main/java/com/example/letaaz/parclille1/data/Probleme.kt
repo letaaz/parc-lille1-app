@@ -31,6 +31,9 @@ data class Probleme(
                 fun random(start : Int, endInclusive : Int) =
                         Random().nextInt((endInclusive + 1) - start) +  start
 
+                /**
+                 * Returnin a random coordinates in the circle defined by a center and a radius
+                 */
                 fun randomCoordinates(center: LatLng, radius: Int) : LatLng {
                         val x0 = center.latitude
                         val y0 =center.longitude
@@ -51,8 +54,11 @@ data class Probleme(
                         return LatLng(foundLatitude, foundLongitude)
                 }
 
+                /**
+                 * Returning a random probleme type string
+                 */
                 fun randomType() : String{
-                        var i = random(0, 5)
+                        val i = random(0, 5)
                         return arrayOf("Arbre à tailler", "Arbre à abattre", "Détritus", "Haie à tailler", "Mauvaise herbe", "Autre")[i]
                 }
         }

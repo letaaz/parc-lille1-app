@@ -1,4 +1,4 @@
-package com.example.letaaz.parclille1.ui.ui
+package com.example.letaaz.parclille1.ui.main
 
 import android.arch.lifecycle.LiveData
 import android.arch.lifecycle.ViewModel
@@ -44,7 +44,7 @@ class ProblemeViewModel(probemeRepository: ProblemeRepository) : ViewModel() {
     fun generateProblemes(number : Int, ssl : SimpleLocationService) {
         for (i in 1..number) {
             var fakeType = Probleme.randomType()
-            var fakePosition = Probleme.randomCoordinates(MainActivity.GEOCENTER, 10000)
+            var fakePosition = Probleme.randomCoordinates(MainActivity.GEOCENTER, 30000)
             var fakeAddress = Location("")
             fakeAddress.latitude = fakePosition.latitude
             fakeAddress.longitude = fakePosition.longitude

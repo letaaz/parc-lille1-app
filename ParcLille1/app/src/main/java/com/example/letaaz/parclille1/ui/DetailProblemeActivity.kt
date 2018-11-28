@@ -8,8 +8,10 @@ import android.content.Intent
 import android.os.Bundle
 import android.support.v7.app.AlertDialog
 import android.support.v7.app.AppCompatActivity
+import android.view.Menu
+import android.view.MenuInflater
+import android.view.MenuItem
 import android.view.View
-import android.widget.Button
 import android.widget.ImageButton
 import android.widget.LinearLayout
 import android.widget.TextView
@@ -41,7 +43,7 @@ class DetailProblemeActivity : AppCompatActivity(), OnMapReadyCallback {
     private var mAddresse: TextView? = null
     private var mDesc: TextView? = null
     private var mDate: TextView? = null
-    private var mButton: Button? = null
+   // private var mButton: Button? = null
     private lateinit var mProblemeDetailViewModel: ProblemeDetailViewModel
     private var mId: Long = 0
 
@@ -65,8 +67,8 @@ class DetailProblemeActivity : AppCompatActivity(), OnMapReadyCallback {
         mapView = findViewById(R.id.detail_map_view)
         homeView = findViewById(R.id.detail_home_view)
 
-        mButton = findViewById(R.id.detail_probleme_show_map_btn)
-        mButton!!.setOnClickListener({
+        /** mButton = findViewById(R.id.detail_probleme_show_map_btn)
+        mButton!!.setOnClickListener {
             if (homeView.visibility == View.VISIBLE) {
                 homeView.visibility = View.GONE
                 mapView.visibility = View.VISIBLE
@@ -74,7 +76,7 @@ class DetailProblemeActivity : AppCompatActivity(), OnMapReadyCallback {
                 mapView.visibility = View.GONE
                 homeView.visibility = View.VISIBLE
             }
-        })
+        } */
 
         val factory = InjectorUtils.provideProblemeDetailViewModelFactory(this, mId.toInt())
         mProblemeDetailViewModel = ViewModelProviders.of(this, factory).get(ProblemeDetailViewModel::class.java)
@@ -105,6 +107,28 @@ class DetailProblemeActivity : AppCompatActivity(), OnMapReadyCallback {
             val alert = dialogBuilder.create()
             alert.setTitle("Alerte de confirmation")
             alert.show()
+        }
+    }
+
+    override fun onCreateOptionsMenu(menu: Menu?): Boolean {
+        val inflater : MenuInflater = menuInflater
+        inflater.inflate(R.menu.detail_activity_menu, menu)
+        return true
+    }
+
+    override fun onOptionsItemSelected(item: MenuItem?): Boolean {
+        return when(item!!.itemId) {
+            R.id.detail_activity_show_map_btn -> {
+                if (homeView.visibility == View.VISIBLE) {
+                    homeView.visibility = View.GONE
+                    mapView.visibility = View.VISIBLE
+                } else {
+                    mapView.visibility = View.GONE
+                    homeView.visibility = View.VISIBLE
+                }
+                true
+            }else ->
+                super.onOptionsItemSelected(item)
         }
     }
 
@@ -139,8 +163,8 @@ class DetailProblemeActivity : AppCompatActivity(), OnMapReadyCallback {
     private fun updateFields(probleme: Probleme) {
         mType!!.text = probleme.type
         mContainerType!!.setBackgroundColor(InjectorUtils.problemeTypeColor(mContext!!, probleme.type))
-        mPosition!!.text = "Position géographique :\n ${probleme.position_lat} (lat), ${probleme.position_long} (long)"
-        mAddresse!!.text = "Adresse : ${probleme.adresse}"
+        mPosition!!.text = "${probleme.position_lat} (lat), ${probleme.position_long} (long)"
+        mAddresse!!.text = "${probleme.adresse}"
         mDesc!!.text = probleme.description
         mDate!!.text = "Ajouté le ${MainActivity.DATE_FORMAT.format(probleme.date)}"
     }
